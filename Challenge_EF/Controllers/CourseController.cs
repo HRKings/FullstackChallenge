@@ -25,6 +25,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Returns all the courses
 		/// </summary>
+		/// <response code="200">Returns all the courses</response>
+		/// <response code="400">If there are no courses on the database</response>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Course>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -41,6 +43,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Returns a single course by their id
 		/// </summary>
+		/// <response code="200">Returns the course</response>
+		/// <response code="400">If there is no course with this id</response>
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Course))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -57,8 +61,10 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Creates a new course
 		/// </summary>
+		/// <response code="201">Returns the newly created course</response>
+		/// <response code="400">If there is some error</response>
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Course))]
+		[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Course))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext, [FromBody] NameData course)
 		{
@@ -71,7 +77,7 @@ namespace Challenge_EF.Controllers
 
 				await dbContext.SaveChangesAsync();
 
-				return Ok(result.Entity);
+				return CreatedAtRoute("Course", result.Entity);
 			}
 			catch (Exception e)
 			{
@@ -82,6 +88,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Updates a course
 		/// </summary>
+		/// <response code="200">Returns the updated course</response>
+		/// <response code="400">If there is an error</response>
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Course))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,6 +119,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Deletes a course
 		/// </summary>
+		/// <response code="200">If the course was delete</response>
+		/// <response code="400">If there is an error</response>
 		[HttpDelete("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -24,6 +24,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Associates a teacher to a course
 		/// </summary>
+		/// <response code="200">Returns the association between the course and teacher</response>
+		/// <response code="400">If there is an error</response>
 		[HttpPost("teacher")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teach))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,6 +59,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Associates a student to a course
 		/// </summary>
+		/// <response code="200">Returns the association between the course and student</response>
+		/// <response code="400">If there is an error</response>
 		[HttpPost("student")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Attend))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,6 +94,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Removes a teacher from a course
 		/// </summary>
+		/// <response code="200">If the teacher was removed from the course</response>
+		/// <response code="400">If there is an error</response>
 		[HttpDelete("teacher")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,6 +126,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Removes a student from a course
 		/// </summary>
+		/// <response code="200">If the student was remove from the course</response>
+		/// <response code="400">If there is an error</response>
 		[HttpDelete("student")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
