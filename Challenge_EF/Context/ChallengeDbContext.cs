@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Challenge_EF.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Challenge_EF.Models
+namespace Challenge_EF.Context
 {
     public partial class ChallengeDbContext : DbContext
     {
