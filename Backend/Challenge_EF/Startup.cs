@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -75,9 +76,11 @@ namespace Challenge_EF
 
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						ValidateAudience = false
+						ValidateAudience = false,
 					};
 				});
+
+			IdentityModelEventSource.ShowPII = true;
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

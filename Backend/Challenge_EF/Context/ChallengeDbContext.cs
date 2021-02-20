@@ -119,13 +119,6 @@ namespace Challenge_EF.Context
 					.HasMaxLength(80)
 					.HasColumnName("name");
 			});
-
-			OnModelCreatingPartial(modelBuilder);
-		}
-
-		private void OnModelCreatingPartial(ModelBuilder modelBuilder)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }
