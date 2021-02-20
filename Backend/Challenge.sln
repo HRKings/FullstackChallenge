@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge_EF", "Challenge_E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIChallenge.Tests", "APIChallenge.Tests\APIChallenge.Tests.csproj", "{B9B1BB34-0119-4817-B126-788E7A52EE09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9B1BB34-0119-4817-B126-788E7A52EE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9B1BB34-0119-4817-B126-788E7A52EE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9B1BB34-0119-4817-B126-788E7A52EE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9B1BB34-0119-4817-B126-788E7A52EE09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
