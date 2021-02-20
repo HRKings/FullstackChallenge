@@ -36,6 +36,7 @@ namespace Challenge_EF
 
 			services.AddDbContext<ChallengeDbContext>(
 				options => options.UseNpgsql(Configuration.GetConnectionString("Database")));
+			
 		}
 		
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
