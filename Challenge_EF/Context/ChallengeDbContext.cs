@@ -1,127 +1,131 @@
-﻿using Challenge_EF.Models;
+﻿using System;
+using Challenge_EF.Models;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace Challenge_EF.Context
 {
-    public partial class ChallengeDbContext : DbContext
-    {
-        public ChallengeDbContext()
-        {
-        }
+	public class ChallengeDbContext : DbContext
+	{
+		public ChallengeDbContext()
+		{
+		}
 
-        public ChallengeDbContext(DbContextOptions<ChallengeDbContext> options)
-            : base(options)
-        {
-        }
+		public ChallengeDbContext(DbContextOptions<ChallengeDbContext> options)
+			: base(options)
+		{
+		}
 
-        public virtual DbSet<Attend> Attends { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<Teach> Teaches { get; set; }
-        public virtual DbSet<Teacher> Teachers { get; set; }
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.HasAnnotation("Relational:Collation", "C");
+		public virtual DbSet<Attend> Attends { get; set; }
+		public virtual DbSet<Course> Courses { get; set; }
+		public virtual DbSet<Student> Students { get; set; }
+		public virtual DbSet<Teach> Teaches { get; set; }
+		public virtual DbSet<Teacher> Teachers { get; set; }
 
-            // _attends Table
-            modelBuilder.Entity<Attend>(entity =>
-            {
-                entity.ToTable("_attends");
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.HasAnnotation("Relational:Collation", "C");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('attends_id_seq'::regclass)");
+			// _attends Table
+			modelBuilder.Entity<Attend>(entity =>
+			{
+				entity.ToTable("_attends");
 
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.HasDefaultValueSql("nextval('attends_id_seq'::regclass)");
 
-                entity.Property(e => e.StudentId).HasColumnName("student_id");
+				entity.Property(e => e.CourseId).HasColumnName("course_id");
 
-                entity.HasOne(d => d.Course)
-                    .WithMany(p => p.Attends)
-                    .HasForeignKey(d => d.CourseId)
-                    .HasConstraintName("FK__course");
+				entity.Property(e => e.StudentId).HasColumnName("student_id");
 
-                entity.HasOne(d => d.Student)
-                    .WithMany(p => p.Attends)
-                    .HasForeignKey(d => d.StudentId)
-                    .HasConstraintName("FK_attends_student");
-            });
+				entity.HasOne(d => d.Course)
+					.WithMany(p => p.Attends)
+					.HasForeignKey(d => d.CourseId)
+					.HasConstraintName("FK__course");
 
-            // Course Table
-            modelBuilder.Entity<Course>(entity =>
-            {
-                entity.ToTable("course");
+				entity.HasOne(d => d.Student)
+					.WithMany(p => p.Attends)
+					.HasForeignKey(d => d.StudentId)
+					.HasConstraintName("FK_attends_student");
+			});
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('course_id_seq'::regclass)");
+			// Course Table
+			modelBuilder.Entity<Course>(entity =>
+			{
+				entity.ToTable("course");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(80)
-                    .HasColumnName("name");
-            });
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.HasDefaultValueSql("nextval('course_id_seq'::regclass)");
 
-            // Student Table
-            modelBuilder.Entity<Student>(entity =>
-            {
-                entity.ToTable("student");
+				entity.Property(e => e.Name)
+					.IsRequired()
+					.HasMaxLength(80)
+					.HasColumnName("name");
+			});
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('student_id_seq'::regclass)");
+			// Student Table
+			modelBuilder.Entity<Student>(entity =>
+			{
+				entity.ToTable("student");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(80)
-                    .HasColumnName("name");
-            });
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.HasDefaultValueSql("nextval('student_id_seq'::regclass)");
 
-            // _teaches Table
-            modelBuilder.Entity<Teach>(entity =>
-            {
-                entity.ToTable("_teaches");
+				entity.Property(e => e.Name)
+					.IsRequired()
+					.HasMaxLength(80)
+					.HasColumnName("name");
+			});
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('_teaches_id_seq'::regclass)");
+			// _teaches Table
+			modelBuilder.Entity<Teach>(entity =>
+			{
+				entity.ToTable("_teaches");
 
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.HasDefaultValueSql("nextval('_teaches_id_seq'::regclass)");
 
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
+				entity.Property(e => e.CourseId).HasColumnName("course_id");
 
-                entity.HasOne(d => d.Course)
-                    .WithMany(p => p.Teaches)
-                    .HasForeignKey(d => d.CourseId)
-                    .HasConstraintName("FK__course");
+				entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.Teaches)
-                    .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK__teacher");
-            });
+				entity.HasOne(d => d.Course)
+					.WithMany(p => p.Teaches)
+					.HasForeignKey(d => d.CourseId)
+					.HasConstraintName("FK__course");
 
-            // Teacher Table
-            modelBuilder.Entity<Teacher>(entity =>
-            {
-                entity.ToTable("teacher");
+				entity.HasOne(d => d.Teacher)
+					.WithMany(p => p.Teaches)
+					.HasForeignKey(d => d.TeacherId)
+					.HasConstraintName("FK__teacher");
+			});
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('teacher_id_seq'::regclass)");
+			// Teacher Table
+			modelBuilder.Entity<Teacher>(entity =>
+			{
+				entity.ToTable("teacher");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(80)
-                    .HasColumnName("name");
-            });
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.HasDefaultValueSql("nextval('teacher_id_seq'::regclass)");
 
-            OnModelCreatingPartial(modelBuilder);
-        }
+				entity.Property(e => e.Name)
+					.IsRequired()
+					.HasMaxLength(80)
+					.HasColumnName("name");
+			});
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-    }
+			OnModelCreatingPartial(modelBuilder);
+		}
+
+		private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

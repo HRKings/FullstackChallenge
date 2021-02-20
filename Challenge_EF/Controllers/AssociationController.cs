@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
@@ -16,26 +15,27 @@ namespace Challenge_EF.Controllers
 	public class AssociationController : ControllerBase
 	{
 		private readonly ILogger<AssociationController> _logger;
-
+		
 		public AssociationController(ILogger<AssociationController> logger)
 		{
 			_logger = logger;
 		}
-		
+
 		/// <summary>
-		/// Associates a teacher to a course
+		///     Associates a teacher to a course
 		/// </summary>
 		[HttpPost("teacher")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teach))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> AddTeacherToCourse([FromServices] ChallengeDbContext dbContext, [FromBody] TeacherCourseAssociation association)
+		public async Task<IActionResult> AddTeacherToCourse([FromServices] ChallengeDbContext dbContext,
+			[FromBody] TeacherCourseAssociation association)
 		{
 			if (await dbContext.Teachers.FindAsync(association.TeacherId) == null)
 				return BadRequest($"The teacher {association.TeacherId} was not found.");
-			
+
 			if (await dbContext.Courses.FindAsync(association.CourseId) == null)
 				return BadRequest($"The course {association.CourseId} was not found.");
-				
+
 			try
 			{
 				var result = await dbContext.Teaches.AddAsync(new Teach
@@ -43,9 +43,9 @@ namespace Challenge_EF.Controllers
 					TeacherId = association.TeacherId,
 					CourseId = association.CourseId
 				});
-				
+
 				await dbContext.SaveChangesAsync();
-				
+
 				return Ok(result.Entity);
 			}
 			catch (Exception e)
@@ -53,21 +53,22 @@ namespace Challenge_EF.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
 		/// <summary>
-		/// Associates a student to a course
+		///     Associates a student to a course
 		/// </summary>
 		[HttpPost("student")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Attend))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> AddStudentToCourse([FromServices] ChallengeDbContext dbContext, [FromBody] StudentCourseAssociation association)
+		public async Task<IActionResult> AddStudentToCourse([FromServices] ChallengeDbContext dbContext,
+			[FromBody] StudentCourseAssociation association)
 		{
 			if (await dbContext.Students.FindAsync(association.StudentId) == null)
 				return BadRequest($"The student {association.StudentId} was not found.");
-			
+
 			if (await dbContext.Courses.FindAsync(association.CourseId) == null)
 				return BadRequest($"The course {association.CourseId} was not found.");
-				
+
 			try
 			{
 				var result = await dbContext.Attends.AddAsync(new Attend
@@ -75,9 +76,9 @@ namespace Challenge_EF.Controllers
 					StudentId = association.StudentId,
 					CourseId = association.CourseId
 				});
-				
+
 				await dbContext.SaveChangesAsync();
-				
+
 				return Ok(result.Entity);
 			}
 			catch (Exception e)
@@ -85,24 +86,26 @@ namespace Challenge_EF.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
 		/// <summary>
-		/// Removes a teacher from a course
+		///     Removes a teacher from a course
 		/// </summary>
 		[HttpDelete("teacher")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> RemoveTeacherFromCourse([FromServices] ChallengeDbContext dbContext, [FromBody] TeacherCourseAssociation association)
+		public async Task<IActionResult> RemoveTeacherFromCourse([FromServices] ChallengeDbContext dbContext,
+			[FromBody] TeacherCourseAssociation association)
 		{
 			if (await dbContext.Teachers.FindAsync(association.TeacherId) == null)
 				return BadRequest($"The teacher {association.TeacherId} was not found.");
-			
+
 			if (await dbContext.Courses.FindAsync(association.CourseId) == null)
 				return BadRequest($"The course {association.CourseId} was not found.");
-				
+
 			try
 			{
-				var result = await dbContext.Teaches.FirstAsync(teach => teach.TeacherId == association.TeacherId && teach.CourseId == association.CourseId);
+				var result = await dbContext.Teaches.FirstAsync(teach =>
+					teach.TeacherId == association.TeacherId && teach.CourseId == association.CourseId);
 				dbContext.Entry(result).State = EntityState.Deleted;
 				await dbContext.SaveChangesAsync();
 
@@ -113,24 +116,26 @@ namespace Challenge_EF.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
 		/// <summary>
-		/// Removes a student from a course
+		///     Removes a student from a course
 		/// </summary>
 		[HttpDelete("student")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> RemoveStudentFromCourse([FromServices] ChallengeDbContext dbContext, [FromBody] StudentCourseAssociation association)
+		public async Task<IActionResult> RemoveStudentFromCourse([FromServices] ChallengeDbContext dbContext,
+			[FromBody] StudentCourseAssociation association)
 		{
 			if (await dbContext.Teachers.FindAsync(association.StudentId) == null)
 				return BadRequest($"The student {association.StudentId} was not found.");
-			
+
 			if (await dbContext.Courses.FindAsync(association.CourseId) == null)
 				return BadRequest($"The course {association.CourseId} was not found.");
-				
+
 			try
 			{
-				var result = await dbContext.Attends.FirstAsync(attend => attend.StudentId == association.StudentId && attend.CourseId == association.CourseId);
+				var result = await dbContext.Attends.FirstAsync(attend =>
+					attend.StudentId == association.StudentId && attend.CourseId == association.CourseId);
 				dbContext.Entry(result).State = EntityState.Deleted;
 				await dbContext.SaveChangesAsync();
 
