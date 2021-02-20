@@ -132,7 +132,7 @@ namespace Challenge_EF.Controllers
 		public async Task<IActionResult> RemoveStudentFromCourse([FromServices] ChallengeDbContext dbContext,
 			[FromBody] StudentCourseAssociation association)
 		{
-			if (await dbContext.Teachers.FindAsync(association.StudentId) == null)
+			if (await dbContext.Students.FindAsync(association.StudentId) == null)
 				return BadRequest($"The student {association.StudentId} was not found.");
 
 			if (await dbContext.Courses.FindAsync(association.CourseId) == null)
