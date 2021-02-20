@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
 using Challenge_EF.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Challenge_EF.Controllers
 {
+	/// <response code="401">If you don't have a valid JWT token</response>
+	[Authorize]
 	[ApiController]
 	[Route("[controller]")]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[Produces("application/json")]
 	public class AssociationController : ControllerBase
 	{
 		private readonly ILogger<AssociationController> _logger;
