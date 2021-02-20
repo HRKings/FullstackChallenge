@@ -19,13 +19,6 @@ namespace Challenge_EF.Controllers
 	[Produces("application/json")]
 	public class StudentController : ControllerBase
 	{
-		private readonly ILogger<StudentController> _logger;
-
-		public StudentController(ILogger<StudentController> logger)
-		{
-			_logger = logger;
-		}
-
 		/// <summary>
 		///     Returns all the students
 		/// </summary>

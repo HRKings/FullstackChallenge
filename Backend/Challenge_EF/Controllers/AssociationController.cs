@@ -19,13 +19,6 @@ namespace Challenge_EF.Controllers
 	[Produces("application/json")]
 	public class AssociationController : ControllerBase
 	{
-		private readonly ILogger<AssociationController> _logger;
-		
-		public AssociationController(ILogger<AssociationController> logger)
-		{
-			_logger = logger;
-		}
-
 		/// <summary>
 		///     Associates a teacher to a course
 		/// </summary>
