@@ -25,6 +25,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Returns all the students
 		/// </summary>
+		/// <response code="200">Returns all students</response>
+		/// <response code="400">If there is no students in the database</response>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Student>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -41,6 +43,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Returns a single student by their id
 		/// </summary>
+		/// <response code="200">Returns the student</response>
+		/// <response code="400">If there is no student with this ID</response>
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -57,8 +61,10 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Creates a new student
 		/// </summary>
+		/// <response code="201">Returns the created student</response>
+		/// <response code="400">If there is an error</response>
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
+		[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Student))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext,
 			[FromBody] NameData student)
@@ -72,7 +78,7 @@ namespace Challenge_EF.Controllers
 
 				await dbContext.SaveChangesAsync();
 
-				return Ok(result.Entity);
+				return CreatedAtRoute("Student", result.Entity);
 			}
 			catch (Exception e)
 			{
@@ -83,6 +89,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Updates a student
 		/// </summary>
+		/// <response code="200">Returns the updated student</response>
+		/// <response code="400">If there is an error</response>
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -112,6 +120,8 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Deletes a student
 		/// </summary>
+		/// <response code="200">If the student was deleted</response>
+		/// <response code="400">If there is an error</response>
 		[HttpDelete("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

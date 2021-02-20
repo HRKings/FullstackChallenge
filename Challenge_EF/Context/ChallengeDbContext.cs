@@ -16,7 +16,7 @@ namespace Challenge_EF.Context
 			: base(options)
 		{
 		}
-
+		
 		public virtual DbSet<Attend> Attends { get; set; }
 		public virtual DbSet<Course> Courses { get; set; }
 		public virtual DbSet<Student> Students { get; set; }
