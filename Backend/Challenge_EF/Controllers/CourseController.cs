@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
 using Challenge_EF.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Challenge_EF.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("[controller]")]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[Produces("application/json")]
 	public class CourseController : ControllerBase
 	{
 		private readonly ILogger<CourseController> _logger;
