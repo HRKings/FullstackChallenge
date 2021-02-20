@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Models;
@@ -32,6 +34,10 @@ namespace Challenge_EF
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo {Title = "Challenge_EF", Version = "v1"});
+				
+				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+				string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+				c.IncludeXmlComments(xmlPath);
 			});
 
 			services.AddDbContext<ChallengeDbContext>(
