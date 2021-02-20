@@ -55,7 +55,7 @@ namespace Challenge_EF.Controllers
 		}
 		
 		/// <summary>
-		/// Associates a teacher to a course
+		/// Associates a student to a course
 		/// </summary>
 		[HttpPost("student")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Attend))]
