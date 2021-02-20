@@ -21,9 +21,9 @@ namespace Challenge_EF.Controllers
 		{
 			_logger = logger;
 		}
-		
+
 		/// <summary>
-		/// Returns all the teachers
+		///     Returns all the teachers
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Teacher>))]
@@ -37,9 +37,9 @@ namespace Challenge_EF.Controllers
 
 			return Ok(result);
 		}
-		
+
 		/// <summary>
-		/// Returns a single teacher by their id
+		///     Returns a single teacher by their id
 		/// </summary>
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teacher))]
@@ -50,27 +50,28 @@ namespace Challenge_EF.Controllers
 
 			if (result == null)
 				return BadRequest($"The teacher {id} was not found.");
-			
+
 			return Ok(result);
 		}
-		
+
 		/// <summary>
-		/// Creates a new teacher
+		///     Creates a new teacher
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teacher))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext, [FromBody] NameData teacher)
+		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext,
+			[FromBody] NameData teacher)
 		{
 			try
 			{
 				var result = await dbContext.Teachers.AddAsync(new Teacher
 				{
-					Name = teacher.Name,
+					Name = teacher.Name
 				});
-				
+
 				await dbContext.SaveChangesAsync();
-				
+
 				return Ok(result.Entity);
 			}
 			catch (Exception e)
@@ -78,14 +79,15 @@ namespace Challenge_EF.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
 		/// <summary>
-		/// Updates a teacher
+		///     Updates a teacher
 		/// </summary>
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teacher))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> Update([FromServices] ChallengeDbContext dbContext, [FromRoute] int id, [FromBody] NameData teacher)
+		public async Task<IActionResult> Update([FromServices] ChallengeDbContext dbContext, [FromRoute] int id,
+			[FromBody] NameData teacher)
 		{
 			var result = await dbContext.Teachers.FindAsync(id);
 
@@ -98,7 +100,7 @@ namespace Challenge_EF.Controllers
 			{
 				dbContext.Teachers.Update(result);
 				await dbContext.SaveChangesAsync();
-				
+
 				return Ok(result);
 			}
 			catch (Exception e)
@@ -106,9 +108,9 @@ namespace Challenge_EF.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
 		/// <summary>
-		/// Deletes a teacher
+		///     Deletes a teacher
 		/// </summary>
 		[HttpDelete("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
@@ -117,10 +119,10 @@ namespace Challenge_EF.Controllers
 		{
 			try
 			{
-				var result = new Teacher() { Id = id };
+				var result = new Teacher {Id = id};
 				dbContext.Entry(result).State = EntityState.Deleted;
 				await dbContext.SaveChangesAsync();
-				
+
 				return Ok();
 			}
 			catch (Exception e)

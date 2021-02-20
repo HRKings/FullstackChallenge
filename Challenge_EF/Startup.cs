@@ -1,20 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Challenge_EF.Context;
-using Challenge_EF.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace Challenge_EF
@@ -27,14 +20,14 @@ namespace Challenge_EF
 		}
 
 		public IConfiguration Configuration { get; }
-		
+
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo {Title = "Challenge_EF", Version = "v1"});
-				
+
 				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 				string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				c.IncludeXmlComments(xmlPath);
@@ -42,9 +35,8 @@ namespace Challenge_EF
 
 			services.AddDbContext<ChallengeDbContext>(
 				options => options.UseNpgsql(Configuration.GetConnectionString("Database")));
-			
 		}
-		
+
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
