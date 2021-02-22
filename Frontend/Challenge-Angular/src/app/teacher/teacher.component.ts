@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { NameData } from '../_models/NameData';
+import { TeacherService } from '../_services/teacher.service';
 
 @Component({
   selector: 'app-teacher',
@@ -8,21 +8,21 @@ import { AuthService } from '../_services/auth.service';
   styleUrls: ['./teacher.component.css']
 })
 export class TeacherComponent implements OnInit {
+  teachers: NameData[];
+  selectedTeacher?: NameData;
 
-  response: Object;
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
-  ngOnInit() {
-    let headers = new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue(), 'Access-Control-Allow-Origin': 'Content-Type, Authorization' });
-
-    this.http.get("https://localhost:5001/Teacher", { headers: headers })
-      .subscribe(response => this.callback(response));
-
+  onSelect(teacher: NameData): void {
+    this.selectedTeacher = teacher;
   }
 
-  callback(request) {
-    this.response = request;
-    console.log(request);
+  constructor(private teacherService: TeacherService) { }
+
+  getTeachers(): void {
+    this.teacherService.getTeachers().subscribe(teachers => this.teachers = teachers);
+  }
+
+  ngOnInit(): void {
+    this.getTeachers()
   }
 
 }
