@@ -39,6 +39,32 @@ namespace APIChallenge.Tests.EntityFramework
 		}
 		
 		[Fact]
+		public async Task GetTotal()
+		{
+			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
+				.UseInMemoryDatabase(databaseName: "GetTotalStudents")
+				.Options;
+
+			// Insert seed data into the database using one instance of the context
+			await using (var context = new ChallengeDbContext(options))
+			{
+				await context.Students.AddAsync(new Student {Id = 1, Name = "Jonas"});
+				await context.Students.AddAsync(new Student {Id = 2, Name = "Pietra"});
+				await context.Students.AddAsync(new Student {Id = 3, Name = "Maria"});
+				await context.SaveChangesAsync();
+			}
+
+			// Use a clean instance of the context to run the test
+			await using (var context = new ChallengeDbContext(options))
+			{
+				var students = await new StudentController().GetTotal(context) as OkObjectResult;
+
+				Assert.NotNull(students);
+				Assert.Equal(3, (int) students.Value);
+			}
+		}
+		
+		[Fact]
 		public async Task GetPagedStudents()
 		{
 			var options = new DbContextOptionsBuilder<ChallengeDbContext>()

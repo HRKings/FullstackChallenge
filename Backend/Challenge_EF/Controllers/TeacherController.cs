@@ -41,6 +41,24 @@ namespace Challenge_EF.Controllers
 
 			return Ok(result);
 		}
+		
+		/// <summary>
+		///     Returns the number of teachers on the database
+		/// </summary>
+		/// <response code="200">Returns the number of teachers on the database</response>
+		/// <response code="400">If there is no teacher on the database</response>
+		[HttpGet("total")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetTotal([FromServices] ChallengeDbContext dbContext)
+		{
+			int result = await dbContext.Teachers.CountAsync();
+			
+			if (result == 0)
+				return BadRequest("No teachers were found.");
+
+			return Ok(result);
+		}
 
 		/// <summary>
 		///     Returns a single teacher by their id
