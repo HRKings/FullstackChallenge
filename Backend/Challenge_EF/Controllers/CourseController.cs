@@ -21,7 +21,7 @@ namespace Challenge_EF.Controllers
 	public class CourseController : ControllerBase
 	{
 		/// <summary>
-		///     Returns all the courses
+		///     Returns all the courses, can be paged using the page and pageSize query
 		/// </summary>
 		/// <response code="200">Returns all the courses</response>
 		/// <response code="400">If there are no courses on the database</response>

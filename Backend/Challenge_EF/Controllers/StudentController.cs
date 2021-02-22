@@ -21,7 +21,7 @@ namespace Challenge_EF.Controllers
 	public class StudentController : ControllerBase
 	{
 		/// <summary>
-		///     Returns all the students
+		///     Returns all the students, can be paged using the page and pageSize query
 		/// </summary>
 		/// <response code="200">Returns all students</response>
 		/// <response code="400">If there is no students in the database</response>
