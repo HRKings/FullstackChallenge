@@ -1,4 +1,15 @@
 /* Structure */
+.mainBody {
+  min-width: 100rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.mainSection {
+  min-width: 120rem;
+}
+
 .example-container {
   position: relative;
   min-height: 200px;
