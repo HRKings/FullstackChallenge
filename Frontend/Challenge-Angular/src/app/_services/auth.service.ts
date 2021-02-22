@@ -45,6 +45,10 @@ export class AuthService {
     return this.manager.signinRedirect();
   }
 
+  startLogout(): Promise<void> {
+    return this.manager.signoutRedirect();
+  }
+
   completeAuthentication(): Promise<void> {
     return this.manager.signinRedirectCallback().then(user => {
       this.user = user;

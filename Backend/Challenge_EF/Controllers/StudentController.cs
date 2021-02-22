@@ -35,7 +35,7 @@ namespace Challenge_EF.Controllers
 			if (page == 0)
 				result = await dbContext.Students.ToListAsync();
 			else
-				result = await dbContext.Students.GetPaged(page, pageSize);
+				result = await dbContext.Students.GetPaged(page, pageSize, student => student.Id);
 
 			if (result.Count == 0)
 				return BadRequest("No Students were found.");
@@ -82,10 +82,10 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Creates a new student
 		/// </summary>
-		/// <response code="201">Returns the created student</response>
+		/// <response code="200">Returns the created student</response>
 		/// <response code="400">If there is an error</response>
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Student))]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext,
 			[FromBody] NameData student)
@@ -99,7 +99,7 @@ namespace Challenge_EF.Controllers
 
 				await dbContext.SaveChangesAsync();
 
-				return CreatedAtRoute("Student", result.Entity);
+				return Ok(result.Entity);
 			}
 			catch (Exception e)
 			{

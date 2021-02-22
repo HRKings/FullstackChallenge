@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
@@ -34,7 +35,7 @@ namespace Challenge_EF.Controllers
 			if (page == 0)
 				result = await dbContext.Teachers.ToListAsync();
 			else
-				result = await dbContext.Teachers.GetPaged(page, pageSize);
+				result = await dbContext.Teachers.GetPaged(page, pageSize, teacher => teacher.Id);
 
 			if (result.Count == 0)
 				return BadRequest("No teachers were found.");
@@ -81,10 +82,10 @@ namespace Challenge_EF.Controllers
 		/// <summary>
 		///     Creates a new teacher
 		/// </summary>
-		/// <response code="201">Returns the created teacher</response>
+		/// <response code="200">Returns the created teacher</response>
 		/// <response code="400">If there is an error</response>
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Teacher))]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teacher))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Create([FromServices] ChallengeDbContext dbContext,
 			[FromBody] NameData teacher)
@@ -98,7 +99,7 @@ namespace Challenge_EF.Controllers
 
 				await dbContext.SaveChangesAsync();
 
-				return CreatedAtRoute("Teacher", result.Entity);
+				return Ok(result.Entity);
 			}
 			catch (Exception e)
 			{
