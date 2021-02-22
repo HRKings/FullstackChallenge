@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
@@ -37,6 +38,24 @@ namespace Challenge_EF.Controllers
 				result = await dbContext.Students.GetPaged(page, pageSize);
 
 			if (result.Count == 0)
+				return BadRequest("No Students were found.");
+
+			return Ok(result);
+		}
+		
+		/// <summary>
+		///     Returns the number of students on the database
+		/// </summary>
+		/// <response code="200">Returns the number of students on the database</response>
+		/// <response code="400">If there is no students in the database</response>
+		[HttpGet("total")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Student>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetTotal([FromServices] ChallengeDbContext dbContext)
+		{
+			int result = await dbContext.Students.CountAsync();
+			
+			if (result == 0)
 				return BadRequest("No Students were found.");
 
 			return Ok(result);

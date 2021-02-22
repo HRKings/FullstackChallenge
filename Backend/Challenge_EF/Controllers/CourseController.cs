@@ -41,6 +41,24 @@ namespace Challenge_EF.Controllers
 
 			return Ok(result);
 		}
+		
+		/// <summary>
+		///     Returns the number of courses on the database
+		/// </summary>
+		/// <response code="200">Returns the number of courses on the database</response>
+		/// <response code="400">If there are no courses on the database</response>
+		[HttpGet("total")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Course>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetTotal([FromServices] ChallengeDbContext dbContext)
+		{
+			int result = await dbContext.Courses.CountAsync();
+
+			if (result == 0)
+				return BadRequest("No Courses were found.");
+
+			return Ok(result);
+		}
 
 		/// <summary>
 		///     Returns a single course by their id
