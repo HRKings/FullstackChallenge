@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
 using Challenge_EF.Models;
+using Challenge_EF.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,13 @@ namespace Challenge_EF.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Course>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> Get([FromServices] ChallengeDbContext dbContext)
+		public async Task<IActionResult> Get([FromServices] ChallengeDbContext dbContext, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
 		{
-			var result = await dbContext.Courses.ToListAsync();
+			List<Course> result;
+			if (page == 0)
+				result = await dbContext.Courses.ToListAsync();
+			else
+				result = await dbContext.Courses.GetPaged(page, pageSize);
 
 			if (result.Count == 0)
 				return BadRequest("No Courses were found.");

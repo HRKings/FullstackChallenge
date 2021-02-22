@@ -39,6 +39,33 @@ namespace APIChallenge.Tests.EntityFramework
 		}
 		
 		[Fact]
+		public async Task GetPagedCourses()
+		{
+			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
+				.UseInMemoryDatabase(databaseName: "GetPagedCourses")
+				.Options;
+
+			// Insert seed data into the database using one instance of the context
+			await using (var context = new ChallengeDbContext(options))
+			{
+				await context.Courses.AddAsync(new Course {Id = 1, Name = "Math"});
+				await context.Courses.AddAsync(new Course {Id = 2, Name = "Science"});
+				await context.Courses.AddAsync(new Course {Id = 3, Name = "Geography"});
+				await context.Courses.AddAsync(new Course {Id = 4, Name = "English"});
+				await context.SaveChangesAsync();
+			}
+
+			// Use a clean instance of the context to run the test
+			await using (var context = new ChallengeDbContext(options))
+			{
+				var courses = await new CourseController().Get(context, 1, 2) as OkObjectResult;
+
+				Assert.NotNull(courses);
+				Assert.Equal(2, ((List<Course>) courses.Value).Count);
+			}
+		}
+		
+		[Fact]
 		public async Task GetOneCourse()
 		{
 			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
