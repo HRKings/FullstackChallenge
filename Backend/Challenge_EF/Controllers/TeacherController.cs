@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
 using Challenge_EF.Models;
+using Challenge_EF.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +21,20 @@ namespace Challenge_EF.Controllers
 	public class TeacherController : ControllerBase
 	{
 		/// <summary>
-		///     Returns all the teachers
+		///     Returns all the teachers, can be paged using the page and pageSize query
 		/// </summary>
 		/// <response code="200">Returns all the teachers</response>
 		/// <response code="400">If there is no teacher on the database</response>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Teacher>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> Get([FromServices] ChallengeDbContext dbContext)
+		public async Task<IActionResult> Get([FromServices] ChallengeDbContext dbContext, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
 		{
-			var result = await dbContext.Teachers.ToListAsync();
+			List<Teacher> result;
+			if (page == 0)
+				result = await dbContext.Teachers.ToListAsync();
+			else
+				result = await dbContext.Teachers.GetPaged(page, pageSize);
 
 			if (result.Count == 0)
 				return BadRequest("No teachers were found.");
