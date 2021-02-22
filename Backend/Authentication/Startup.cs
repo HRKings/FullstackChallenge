@@ -4,10 +4,12 @@
 
 using System.Net;
 using System.Net.Security;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Authentication
 {
@@ -22,27 +24,36 @@ namespace Authentication
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             
-            var builder = services.AddIdentityServer(options =>
-            {
-                options.EmitStaticAudienceClaim = true;
-            })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients);
-
-            // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiScopes(TestConfig.GetApiScopes())
+                .AddInMemoryIdentityResources(TestConfig.GetIdentityResources())
+                .AddInMemoryClients(TestConfig.GetClients())
+                .AddTestUsers(TestConfig.GetUsers());
+            
         }
 
         public void Configure(IApplicationBuilder app)
         {
             if (Environment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseCors("Devlopment");
+                app.UseDeveloperExceptionPage();    
             }
-            
+
             app.UseIdentityServer();
+            
+            app.UseStaticFiles();
+
+            app.UseRouting();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 }

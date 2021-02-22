@@ -26,6 +26,10 @@ namespace Challenge_EF
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options => options.AddPolicy("Default", builder =>
+					builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+					));
+			
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -91,11 +95,13 @@ namespace Challenge_EF
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Challenge_EF v1"));
 			}
-
+			
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
 
+			app.UseCors("Default");
+			
 			app.UseAuthentication();
 			app.UseAuthorization();
 

@@ -28,9 +28,9 @@ namespace Challenge_EF.Controllers
 			{
 				Address = disco.TokenEndpoint,
 
-				ClientId = "client",
+				ClientId = "api",
 				ClientSecret = "secret",
-				Scope = "api_challenge"
+				Scope = "api"
 			});
 
 			if (tokenResponse.IsError)
