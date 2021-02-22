@@ -1,3 +1,10 @@
-<p>
-	Response: {{response}}
-</p>
+<div>
+	<ul class="teachers">
+		<li *ngFor="let teacher of teachers" [class.selected]="teacher ===
+			selectedTeacher">
+			<a routerLink="/detail/{{teacher.id}}">
+				<span class="badge">{{teacher.id}}</span> {{teacher.name}}
+			</a>
+		</li>
+	</ul>
+</div>

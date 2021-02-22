@@ -6,9 +6,9 @@ import { TeacherComponent } from './teacher/teacher.component';
 import { AuthGuardService } from './_services/auth-guard.service';
 
 const routes: Routes = [
-  { path: 'protected', component: ProtectedComponent, canActivate: [AuthGuardService] },
   { path: 'auth-callback', component: AuthCallbackComponent },
-  { path: 'teacher', component: TeacherComponent }
+  { path: 'protected', component: ProtectedComponent, canActivate: [AuthGuardService] },
+  { path: 'teacher', component: TeacherComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
