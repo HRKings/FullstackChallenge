@@ -13,7 +13,7 @@ namespace Challenge_Dapper.Repositories
 			await using var connection =
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Teach>("SELECT * FROM _teaches");
+			var result = await connection.QueryAsync<Teach>("SELECT id, teacher_Id teacherId, course_Id courseId FROM _teaches");
 			await connection.CloseAsync();
 			return result;
 		}
@@ -34,7 +34,7 @@ namespace Challenge_Dapper.Repositories
 			await using var connection =
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Attend>("SELECT * FROM __attends");
+			var result = await connection.QueryAsync<Attend>("SELECT id, student_Id studentId, course_Id courseId FROM _attends");
 			await connection.CloseAsync();
 			return result;
 		}
