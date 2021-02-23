@@ -76,7 +76,7 @@ namespace Challenge_EF
 			services.AddAuthentication("Bearer")
 				.AddJwtBearer("Bearer", options =>
 				{
-					options.Authority = "https://localhost:5002";
+					options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER");
 
 					options.TokenValidationParameters = new TokenValidationParameters
 					{

@@ -93,7 +93,7 @@ namespace Challenge_Dapper
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Challenge_Dapper v1"));
 			}
 			
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseRouting();
 
