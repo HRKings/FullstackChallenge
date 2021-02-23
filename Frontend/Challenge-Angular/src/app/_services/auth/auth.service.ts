@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
+import { environment } from 'src/environments/environment';
 
 export function getClientSettings(): UserManagerSettings {
   return {
-    authority: 'https://localhost:5002',
+    authority: environment.authEndpoint,
     client_id: 'angular',
     redirect_uri: 'http://localhost:4200/auth-callback',
     post_logout_redirect_uri: 'http://localhost:4200/',

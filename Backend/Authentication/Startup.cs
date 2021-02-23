@@ -28,10 +28,10 @@ namespace Authentication
             
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryApiScopes(TestConfig.GetApiScopes())
-                .AddInMemoryIdentityResources(TestConfig.GetIdentityResources())
-                .AddInMemoryClients(TestConfig.GetClients())
-                .AddTestUsers(TestConfig.GetUsers());
+                .AddInMemoryApiScopes(Config.GetApiScopes())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddTestUsers(Config.GetUsers());
             
         }
 
@@ -39,7 +39,6 @@ namespace Authentication
         {
             if (Environment.IsDevelopment())
             {
-                app.UseCors("Devlopment");
                 app.UseDeveloperExceptionPage();    
             }
 

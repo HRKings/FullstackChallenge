@@ -7,7 +7,7 @@ using IdentityServer4.Test;
 
 namespace Authentication
 {
-    public class TestConfig
+    public class Config
     {
         // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
