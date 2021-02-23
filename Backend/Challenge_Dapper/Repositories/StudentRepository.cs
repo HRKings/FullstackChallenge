@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Challenge_Dapper.Models;
 using Dapper;
@@ -11,7 +12,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<IEnumerable<Student>> GetAll()
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result = await connection.QueryAsync<Student>("SELECT * FROM student ORDER BY id");
 			await connection.CloseAsync();
@@ -21,7 +22,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<int> Count()
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result = await connection.QueryFirstAsync<int>("SELECT COUNT(*) FROM student");
 			await connection.CloseAsync();
@@ -31,7 +32,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<IEnumerable<Student>> GetPaged(int page, int pageSize)
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			int skip = (page - 1) * pageSize;
 			await connection.OpenAsync();
 			var result = await connection.QueryAsync<Student>("SELECT * FROM student ORDER BY id OFFSET @skip LIMIT @pageSize",
@@ -43,7 +44,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<IEnumerable<Course>> Courses(int id)
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result = await connection.QueryAsync<Course>(@"SELECT course.id, course.name FROM course ORDER BY id INNER JOIN _attends 
 			ON _attends.course_id = course.id WHERE _attends.student_id = @ID", new {ID = id});
@@ -54,7 +55,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<Student> Get(int id)
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result =
 				await connection.QueryFirstAsync<Student>("SELECT * FROM student WHERE id = @ID", new {ID = id});
@@ -65,7 +66,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<Student> Insert(string name)
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 
 			await connection.OpenAsync();
 			var result = await connection.QueryFirstAsync<Student>("INSERT INTO student(name) VALUES (@name)", new {name});
@@ -76,7 +77,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<Student> Update(Student student)
 		{
 			await using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result = await connection.QueryFirstAsync<Student>("UPDATE student SET name = @name WHERE id = @ID", new {name = student.Name, ID = student.Id});
 			await connection.CloseAsync();
@@ -86,7 +87,7 @@ namespace Challenge_Dapper.Repositories
 		public static async Task<Student> Delete(int id)
 		{
 			using var connection =
-				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
+				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 
 			await connection.OpenAsync();
 			var result = await connection.QueryFirstAsync<Student>("DELETE FROM student WHERE id = @ID", new {ID = id});
