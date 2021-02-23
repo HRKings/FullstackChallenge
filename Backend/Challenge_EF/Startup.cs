@@ -26,9 +26,13 @@ namespace Challenge_EF
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors(options => options.AddPolicy("Default", builder =>
-					builder.WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_PATH")).AllowCredentials().AllowAnyHeader().AllowAnyMethod()
-					));
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder => builder.AllowAnyOrigin()
+						.AllowAnyMethod()
+						.AllowAnyHeader());
+			});
 			
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
@@ -100,7 +104,7 @@ namespace Challenge_EF
 
 			app.UseRouting();
 
-			app.UseCors("Default");
+			app.UseCors("CorsPolicy");
 			
 			app.UseAuthentication();
 			app.UseAuthorization();
