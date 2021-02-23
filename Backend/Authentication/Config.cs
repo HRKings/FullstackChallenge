@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityModel;
 using IdentityServer4;
@@ -49,9 +50,9 @@ namespace Authentication
                     RequirePkce = true,
                     RequireClientSecret = false,
                     AllowedScopes = {"openid", "profile", "api"},
-                    RedirectUris = {"http://localhost:4200/auth-callback", "http://localhost:4200/silent-refresh.html"},
-                    PostLogoutRedirectUris = {"http://localhost:4200/"},
-                    AllowedCorsOrigins = {"http://localhost:4200"},
+                    RedirectUris = {$"{Environment.GetEnvironmentVariable("FRONTEND_PATH")}/auth-callback", $"{Environment.GetEnvironmentVariable("FRONTEND_PATH")}/silent-refresh.html"},
+                    PostLogoutRedirectUris = {Environment.GetEnvironmentVariable("FRONTEND_PATH")},
+                    AllowedCorsOrigins = {Environment.GetEnvironmentVariable("FRONTEND_PATH")},
                     AllowAccessTokensViaBrowser = true
                 }
             };
