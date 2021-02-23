@@ -5,18 +5,18 @@ services:
     container_name: "authentication"
     image: "authentication"
     build:
-      context: .\Authentication
+      context: .\Authentication\
       dockerfile: authentication.dockerfile
     ports:
-      - "5002:5000"
+      - "5002:5001"
     depends_on:
       - "postgres"
     networks:
       - challenge-network
     environment:
-      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_URLS=http://+:5001
       - ASPNETCORE_ENVIRONMENT=Development
-      - FRONTEND_PATH="http://+:4200"
+      - FRONTEND_PATH=http://localhost:4200
 
   web:
     container_name: "challenge-dapper"
@@ -32,7 +32,7 @@ services:
     networks:
       - challenge-network
     environment:
-      - DATABASE="Host=postgres;Database=postgres;Username=postgres;Password=password"
+      - DATABASE=Host=postgres;Database=postgres;Username=postgres;Password=password
       - ASPNETCORE_URLS=http://+:5000
       - IDENTITY_SERVER="http://auth"
       - FRONTEND_PATH="http://+:4200"

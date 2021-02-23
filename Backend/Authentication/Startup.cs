@@ -26,6 +26,14 @@ namespace Authentication
         {
             services.AddControllersWithViews();
             
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+            
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiScopes(Config.GetApiScopes())
@@ -47,6 +55,7 @@ namespace Authentication
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

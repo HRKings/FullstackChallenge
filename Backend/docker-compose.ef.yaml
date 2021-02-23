@@ -16,7 +16,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development
-      - FRONTEND_PATH="http://+:4200"
+      - FRONTEND_PATH=http://localhost:4200
 
   web:
     container_name: "challenge-ef"
@@ -32,7 +32,7 @@ services:
     networks:
       - challenge-network
     environment:
-      - DATABASE="Host=postgres;Database=postgres;Username=postgres;Password=password"
+      - DATABASE=Host=postgres;Database=postgres;Username=postgres;Password=password
       - ASPNETCORE_URLS=http://+:5000
       - IDENTITY_SERVER="http://auth"
       - FRONTEND_PATH="http://+:4200"
