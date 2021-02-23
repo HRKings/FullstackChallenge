@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  auth:
+    container_name: "authentication"
+    image: "authentication"
+    build:
+      context: .\Authentication\
+      dockerfile: authentication.dockerfile
+    ports:
+      - "5002:5002"
+    depends_on:
+      - "postgres"
+    networks:
+      - challenge-network
+
+  web:
+    container_name: "challenge-dapper"
+    image: "challenge_dapper"
+    build:
+      context: .\Challenge_Dapper\
+      dockerfile: challenge_dapper.dockerfile
+    ports:
+      - "5001:5001"
+    depends_on:
+      - "postgres"
+      - "auth"
+    networks:
+      - challenge-network
+
+  postgres:
+    container_name: "postgres"
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ""
+    networks:
+      - challenge-network
+
+networks:
+  aspnetcoreapp-network:
+    driver: bridge

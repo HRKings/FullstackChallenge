@@ -71,7 +71,7 @@ namespace Challenge_EF
 			});
 
 			services.AddDbContext<ChallengeDbContext>(
-				options => options.UseNpgsql(Configuration.GetConnectionString("Database")));
+				options => options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE")));
 			
 			services.AddAuthentication("Bearer")
 				.AddJwtBearer("Bearer", options =>
