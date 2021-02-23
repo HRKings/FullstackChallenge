@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { StudentAssociation } from '../_dto/StudentAssociation';
 import { TeacherAssociation } from '../_dto/TeacherAssociation';
 import { NameData } from '../_models/NameData';
@@ -16,25 +17,25 @@ export class AssociationService {
   // Assign a teacher to a course
   teacherToCourse(teacher: number, course: number): Observable<TeacherAssociation> {
     let headers = new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() });
-    return this.http.post<TeacherAssociation>('https://localhost:5001/Association/teacher', { teacherId: teacher, courseId: course }, { headers: headers });
+    return this.http.post<TeacherAssociation>(`${environment.apiEndpoint}/Association/teacher`, { teacherId: teacher, courseId: course }, { headers: headers });
   }
 
   // Gets all teacher-course associations
   getTeachers(): Observable<NameData[]> {
     let headers = new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() });
-    return this.http.get<NameData[]>("https://localhost:5001/Association/teacher", { headers: headers });
+    return this.http.get<NameData[]>(`${environment.apiEndpoint}/Association/teacher`, { headers: headers });
   }
 
   // Assign a student to a course
   studentToCourse(student: number, course: number): Observable<StudentAssociation> {
     let headers = new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() });
-    return this.http.post<StudentAssociation>('https://localhost:5001/Association/student', { studentId: student, courseId: course }, { headers: headers });
+    return this.http.post<StudentAssociation>(`${environment.apiEndpoint}/Association/student`, { studentId: student, courseId: course }, { headers: headers });
   }
 
   // Gets all student-course associations
   getStudents(): Observable<NameData[]> {
     let headers = new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() });
-    return this.http.get<NameData[]>("https://localhost:5001/Association/student", { headers: headers });
+    return this.http.get<NameData[]>(`${environment.apiEndpoint}/Association/student`, { headers: headers });
   }
 
   // Removes a teacher from a course
@@ -45,7 +46,7 @@ export class AssociationService {
       body: { teacherId: teacher, courseId: course },
     };
 
-    return this.http.delete<TeacherAssociation>('https://localhost:5001/Association/teacher', options);
+    return this.http.delete<TeacherAssociation>(`${environment.apiEndpoint}/Association/teacher`, options);
   }
 
   // Removes a student from a course
@@ -56,7 +57,7 @@ export class AssociationService {
       body: { studentId: student, courseId: course },
     };
 
-    return this.http.delete<StudentAssociation>('https://localhost:5001/Association/student', options);
+    return this.http.delete<StudentAssociation>(`${environment.apiEndpoint}/Association/student`, options);
   }
 
 
