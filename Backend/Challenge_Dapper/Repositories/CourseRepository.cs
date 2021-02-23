@@ -13,7 +13,7 @@ namespace Challenge_Dapper.Repositories
 			await using var connection =
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Course>("SELECT * FROM course");
+			var result = await connection.QueryAsync<Course>("SELECT * FROM course ORDER BY id");
 			await connection.CloseAsync();
 			return result;
 		}
@@ -34,7 +34,7 @@ namespace Challenge_Dapper.Repositories
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			int skip = (page - 1) * pageSize;
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Course>("SELECT * FROM course OFFSET @skip LIMIT @pageSize",
+			var result = await connection.QueryAsync<Course>("SELECT * FROM course ORDER BY id OFFSET @skip LIMIT @pageSize",
 				new {skip, pageSize});
 			await connection.CloseAsync();
 			return result;

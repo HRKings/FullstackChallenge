@@ -13,7 +13,7 @@ namespace Challenge_Dapper.Repositories
 			await using var connection =
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Teacher>("SELECT * FROM teacher");
+			var result = await connection.QueryAsync<Teacher>("SELECT * FROM teacher ORDER BY id");
 			await connection.CloseAsync();
 			return result;
 		}
@@ -34,7 +34,7 @@ namespace Challenge_Dapper.Repositories
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			int skip = (page - 1) * pageSize;
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Teacher>("SELECT * FROM teacher OFFSET @skip LIMIT @pageSize",
+			var result = await connection.QueryAsync<Teacher>("SELECT * FROM teacher ORDER BY id OFFSET @skip LIMIT @pageSize",
 				new {skip, pageSize});
 			await connection.CloseAsync();
 			return result;
@@ -46,7 +46,7 @@ namespace Challenge_Dapper.Repositories
 				new NpgsqlConnection("Host=localhost;Database=challenge;Username=postgres;Password=");
 			await connection.OpenAsync();
 			var result = await connection.QueryAsync<Course>(@"SELECT course.id, course.name FROM course INNER JOIN _teaches 
-			ON _teaches.course_id = course.id WHERE _teaches.teacher_id = @ID", new {ID = id});
+			ON _teaches.course_id = course.id ORDER BY id WHERE _teaches.teacher_id = @ID", new {ID = id});
 			await connection.CloseAsync();
 			return result;
 		}
