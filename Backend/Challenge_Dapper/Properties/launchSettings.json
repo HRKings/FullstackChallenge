@@ -26,7 +26,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DATABASE": "Host=localhost;Database=challenge;Username=postgres;Password=",
-        "IDENTITY_SERVER": "https://localhost:5002"
+        "IDENTITY_SERVER": "https://localhost:5002",
+        "FRONTEND_PATH": "http://localhost:4200"
       }
     }
   }

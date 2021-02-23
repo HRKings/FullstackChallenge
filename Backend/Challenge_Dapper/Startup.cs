@@ -27,7 +27,7 @@ namespace Challenge_Dapper
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCors(options => options.AddPolicy("Default", builder =>
-					builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+					builder.WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_PATH")).AllowCredentials().AllowAnyHeader().AllowAnyMethod()
 					));
 			
 			services.AddControllers();
@@ -73,7 +73,7 @@ namespace Challenge_Dapper
 			services.AddAuthentication("Bearer")
 				.AddJwtBearer("Bearer", options =>
 				{
-					options.Authority = "https://localhost:5002";
+					options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER");
 
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
@@ -93,6 +93,7 @@ namespace Challenge_Dapper
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Challenge_Dapper v1"));
 			}
 			
+			// Disable https redirection for use inside docker
 			//app.UseHttpsRedirection();
 
 			app.UseRouting();
