@@ -46,7 +46,7 @@ namespace Challenge_Dapper.Repositories
 			await using var connection =
 				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
-			var result = await connection.QueryAsync<Course>(@"SELECT course.id, course.name FROM course ORDER BY id INNER JOIN _attends 
+			var result = await connection.QueryAsync<Course>(@"SELECT course.id, course.name FROM course INNER JOIN _attends 
 			ON _attends.course_id = course.id WHERE _attends.student_id = @ID", new {ID = id});
 			await connection.CloseAsync();
 			return result;

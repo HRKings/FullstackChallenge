@@ -47,7 +47,7 @@ namespace Challenge_Dapper.Repositories
 				new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE"));
 			await connection.OpenAsync();
 			var result = await connection.QueryAsync<Course>(@"SELECT course.id, course.name FROM course INNER JOIN _teaches 
-			ON _teaches.course_id = course.id ORDER BY id WHERE _teaches.teacher_id = @ID", new {ID = id});
+			ON _teaches.course_id = course.id WHERE _teaches.teacher_id = @ID", new {ID = id});
 			await connection.CloseAsync();
 			return result;
 		}
