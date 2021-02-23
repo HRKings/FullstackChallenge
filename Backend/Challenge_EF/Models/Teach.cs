@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿using Newtonsoft.Json;
+
+#nullable disable
 
 namespace Challenge_EF.Models
 {
@@ -8,7 +10,9 @@ namespace Challenge_EF.Models
 		public int TeacherId { get; set; }
 		public int CourseId { get; set; }
 
+		[JsonIgnore]
 		public virtual Course Course { get; set; }
+		[JsonIgnore]
 		public virtual Teacher Teacher { get; set; }
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Challenge_EF.Context;
 using Challenge_EF.Data;
 using Challenge_EF.Models;
+using Challenge_EF.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,28 @@ namespace Challenge_EF.Controllers
 	[Produces("application/json")]
 	public class AssociationController : ControllerBase
 	{
+		/// <summary>
+		///     Returns all the teachers associated with their courses, can be paged using the page and pageSize query
+		/// </summary>
+		/// <response code="200">Returns all the teachers associated with their courses</response>
+		/// <response code="400">If there are no teachers associated with any course</response>
+		[HttpGet("teacher")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Teach>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetTeachers([FromServices] ChallengeDbContext dbContext, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
+		{
+			List<Teach> result;
+			if (page == 0)
+				result = await dbContext.Teaches.ToListAsync();
+			else
+				result = await dbContext.Teaches.GetPaged(page, pageSize, teach =>  teach.Id);
+
+			if (result.Count == 0)
+				return BadRequest("No teachers were associated with any courses.");
+
+			return Ok(result);
+		}
+		
 		/// <summary>
 		///     Associates a teacher to a course
 		/// </summary>
@@ -52,6 +76,28 @@ namespace Challenge_EF.Controllers
 			{
 				return BadRequest(e.Message);
 			}
+		}
+		
+		/// <summary>
+		///     Returns all the students associated with their courses, can be paged using the page and pageSize query
+		/// </summary>
+		/// <response code="200">Returns all the students associated with their courses</response>
+		/// <response code="400">If there are no students associated with any course</response>
+		[HttpGet("student")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Attend>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetStudents([FromServices] ChallengeDbContext dbContext, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
+		{
+			List<Attend> result;
+			if (page == 0)
+				result = await dbContext.Attends.ToListAsync();
+			else
+				result = await dbContext.Attends.GetPaged(page, pageSize, attend => attend.Id);
+
+			if (result.Count == 0)
+				return BadRequest("No students were associated with any courses.");
+
+			return Ok(result);
 		}
 
 		/// <summary>
