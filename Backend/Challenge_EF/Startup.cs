@@ -27,7 +27,7 @@ namespace Challenge_EF
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCors(options => options.AddPolicy("Default", builder =>
-					builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+					builder.WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_PATH")).AllowCredentials().AllowAnyHeader().AllowAnyMethod()
 					));
 			
 			services.AddControllers();
