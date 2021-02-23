@@ -16,4 +16,4 @@ The frontend was written in TypeScript, using Angular, it is an access to the AP
 
 ## Docker Files
 
-The entire backend has docker files and two docker-compose ones that you can build, but you will have some problems with CORS if you don't pay attention. The frontend don't have docker support because I find really easy to use the Angular CLI to serve the SPA.
+The entire backend has docker files and two docker-compose ones that you can build. Currently the frontend won't work if you spin the backend from docker because of CORS, but they are already disabled, so I think is a problem with one of the frameworks used. The frontend don't have docker support because I find really easy to use the Angular CLI to serve the SPA.
