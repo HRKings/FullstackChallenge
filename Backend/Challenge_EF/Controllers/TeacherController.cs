@@ -78,6 +78,24 @@ namespace Challenge_EF.Controllers
 
 			return Ok(result);
 		}
+		
+		/// <summary>
+		///     Returns all the courses assigned to the teacher
+		/// </summary>
+		/// <response code="200">Returns all the courses assigned to the teacher</response>
+		/// <response code="400">If there is no course associated with the teacher</response>
+		[HttpGet("{id}/courses")]
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Course>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetCoursesFromId([FromServices] ChallengeDbContext dbContext, [FromRoute] int id)
+		{
+			var result = await dbContext.Teaches.OrderBy(teach => teach.CourseId).Where(teach => teach.TeacherId == id).Select(teach => teach.Course).ToListAsync();
+
+			if (result == null || result.Count == 0)
+				return BadRequest($"The teacher {id} was not found.");
+
+			return Ok(result);
+		}
 
 		/// <summary>
 		///     Creates a new teacher

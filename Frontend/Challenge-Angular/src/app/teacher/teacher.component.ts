@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NameData } from '../_models/NameData';
 import { TeacherService } from '../_services/teacher.service';
 
@@ -10,6 +11,7 @@ import { TeacherService } from '../_services/teacher.service';
 })
 export class TeacherComponent implements OnInit {
   teachers: NameData[];
+  courses: NameData[];
   selectedTeacher?: NameData;
 
   pageIndex: number;
@@ -20,15 +22,32 @@ export class TeacherComponent implements OnInit {
   columnsToDisplay = ['id', 'name'];
 
   onSelect(teacher: NameData): void {
+    this.courses = null;
     this.selectedTeacher = teacher;
+    this.getCourses();
   }
 
-  constructor(private teacherService: TeacherService) { }
+  constructor(private teacherService: TeacherService, private _snackBar: MatSnackBar) { }
 
   getTeachers(event?: PageEvent) {
     this.pageIndex = event ? event.pageIndex : 0;
-    this.teacherService.getTeachersPaged(this.pageIndex + 1, 10).subscribe(teachers => this.teachers = teachers);
+    this.teacherService.getTeachersPaged(this.pageIndex + 1, 10).subscribe(teachers => {
+      if (teachers)
+        this.teachers = teachers
+      else
+        this._snackBar.open('There were no teachers to display.');
+    });
     return event;
+  }
+
+  getCourses(): void {
+    if (this.selectedTeacher)
+      this.teacherService.getCourses(this.selectedTeacher.id).subscribe(courses => {
+        if (courses)
+          this.courses = courses
+        else
+          this._snackBar.open('There were no courses to display.');
+      });
   }
 
   getTeachersCount(): void {

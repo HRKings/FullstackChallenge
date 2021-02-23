@@ -40,14 +40,39 @@
 <mat-divider></mat-divider>
 
 <div *ngIf=" selectedStudent">
-	<h3>Update Student</h3>
-	<form class="example-form">
-		<mat-form-field class="example-full-width">
-			<mat-label>ID: {{selectedStudent.id}} | Name:</mat-label>
-			<input matInput placeholder="Name" (change)="selectedStudent.name=$event.target.value"
-				[value]="selectedStudent.name">
-		</mat-form-field>
-	</form>
-	<button mat-button color="warn" (click)="update()">Update</button>
-	<button mat-button color="warn" (click)="delete()">Delete</button>
+	<div>
+		<h3>Update Student</h3>
+		<form class="example-form">
+			<mat-form-field class="example-full-width">
+				<mat-label>ID: {{selectedStudent.id}} | Name:</mat-label>
+				<input matInput placeholder="Name" (change)="selectedStudent.name=$event.target.value"
+					[value]="selectedStudent.name">
+			</mat-form-field>
+		</form>
+		<button mat-button color="warn" (click)="update()">Update</button>
+		<button mat-button color="warn" (click)="delete()">Delete</button>
+	</div>
+
+	<div class="mainSection">
+		<h3>Assigned courses to the student: {{this.selectedStudent.name}}</h3>
+		<mat-spinner *ngIf="!courses"></mat-spinner>
+		<div class="example-table-container">
+			<table mat-table [dataSource]="courses" matSort class="example-table">
+				<!-- ID Column -->
+				<ng-container matColumnDef="id">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+					<td mat-cell *matCellDef="let row">{{row.id}}</td>
+				</ng-container>
+
+				<!-- Name Column -->
+				<ng-container matColumnDef="name">
+					<th mat-header-cell *matHeaderCellDef>Course</th>
+					<td mat-cell *matCellDef="let row">{{row.name}}</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+				<tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+			</table>
+		</div>
+	</div>
 </div>

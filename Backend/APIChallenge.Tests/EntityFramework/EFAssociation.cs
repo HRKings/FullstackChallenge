@@ -71,6 +71,60 @@ namespace APIChallenge.Tests.EntityFramework
 		}
 		
 		[Fact]
+		public async Task GetTeacherCourses()
+		{
+			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
+				.UseInMemoryDatabase(databaseName: "GetTeacherCourses")
+				.Options;
+
+			// Insert seed data into the database using one instance of the context
+			await using (var context = new ChallengeDbContext(options))
+			{
+				await context.Teachers.AddAsync(new Teacher {Id = 1, Name = "Jonas"});
+				await context.Courses.AddAsync(new Course {Id = 1, Name = "Biology"});
+				await context.Teaches.AddAsync(new Teach {Id = 1, TeacherId = 1, CourseId = 1});
+				await context.SaveChangesAsync();
+			}
+
+			// Use a clean instance of the context to run the test
+			await using (var context = new ChallengeDbContext(options))
+			{
+				var assign = await new TeacherController().GetCoursesFromId(context, 1) as OkObjectResult;
+				
+				Assert.NotNull(assign);
+				Assert.Single((List<Course>) assign.Value);
+				Assert.Equal(200, assign.StatusCode);
+			}
+		}
+		
+		[Fact]
+		public async Task GetStudentCourses()
+		{
+			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
+				.UseInMemoryDatabase(databaseName: "GetStudentCourses")
+				.Options;
+
+			// Insert seed data into the database using one instance of the context
+			await using (var context = new ChallengeDbContext(options))
+			{
+				await context.Students.AddAsync(new Student {Id = 1, Name = "Jonas"});
+				await context.Courses.AddAsync(new Course {Id = 1, Name = "Biology"});
+				await context.Attends.AddAsync(new Attend {Id = 1, StudentId = 1, CourseId = 1});
+				await context.SaveChangesAsync();
+			}
+
+			// Use a clean instance of the context to run the test
+			await using (var context = new ChallengeDbContext(options))
+			{
+				var assign = await new StudentController().GetCoursesFromId(context, 1) as OkObjectResult;
+				
+				Assert.NotNull(assign);
+				Assert.Single((List<Course>) assign.Value);
+				Assert.Equal(200, assign.StatusCode);
+			}
+		}
+		
+		[Fact]
 		public async Task UnassignTeacher()
 		{
 			var options = new DbContextOptionsBuilder<ChallengeDbContext>()
