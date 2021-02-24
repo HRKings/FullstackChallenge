@@ -4,12 +4,14 @@
 
 using System.Net;
 using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Authentication
 {
@@ -41,6 +43,13 @@ namespace Authentication
                 .AddInMemoryClients(Config.GetClients())
                 .AddTestUsers(Config.GetUsers());
             
+            services.AddSingleton<ICorsPolicyService>((container) => {
+                var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+                return new DefaultCorsPolicyService(logger)
+                {
+                    AllowAll = true
+                };
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -50,13 +59,14 @@ namespace Authentication
                 app.UseDeveloperExceptionPage();    
             }
 
+            app.UseCookiePolicy();
             app.UseIdentityServer();
             
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
-            app.UseIdentityServer();
+            
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
