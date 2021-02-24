@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge_EF", "Challenge_EF\Challenge_EF.csproj", "{1EE22088-6A5D-42F7-83D0-5D41CEB3384E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.EF", "Challenge.EF\Challenge.EF.csproj", "{1EE22088-6A5D-42F7-83D0-5D41CEB3384E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Auth", "Challenge.Auth\Challenge.Auth.csproj", "{A0E4BD27-D0D7-43F5-8E15-76B1F0A23CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIChallenge.Tests", "APIChallenge.Tests\APIChallenge.Tests.csproj", "{B9B1BB34-0119-4817-B126-788E7A52EE09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Tests", "Challenge.Tests\Challenge.Tests.csproj", "{B9B1BB34-0119-4817-B126-788E7A52EE09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge_Dapper", "Challenge_Dapper\Challenge_Dapper.csproj", "{DBAB8F41-2A09-4F07-A3FE-8ED119DF7FE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Dapper", "Challenge.Dapper\Challenge.Dapper.csproj", "{DBAB8F41-2A09-4F07-A3FE-8ED119DF7FE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
