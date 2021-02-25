@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NameData } from '../_models/NameData';
-import { PagedData } from '../_models/PagedData';
-import { CourseService } from '../_services/course.service';
+import { NameData } from '../../_models/NameData';
+import { PagedData } from '../../_models/PagedData';
+import { CourseService } from '../../_services/course.service';
 
 @Component({
   selector: 'app-course',
@@ -17,6 +16,9 @@ export class CourseComponent implements OnInit {
   pageIndex: number;
   pageEvent: PageEvent;
 
+  hasError: boolean;
+  errorMessage: string;
+
   newCourse = '';
   columnsToDisplay = ['id', 'name'];
 
@@ -24,15 +26,22 @@ export class CourseComponent implements OnInit {
     this.selectedCourse = course;
   }
 
-  constructor(private courseService: CourseService, private _snackBar: MatSnackBar) { }
+  constructor(private courseService: CourseService) { }
 
   getCourses(event?: PageEvent) {
     this.pageIndex = event ? event.pageIndex : 0;
     this.courseService.getCoursesPaged(this.pageIndex + 1, 10).subscribe(courses => {
-      if (courses)
-        this.courses = courses
-      else
-        this._snackBar.open('There were no courses to display.');
+      if (courses) {
+        this.courses = courses;
+        this.hasError = false;
+        this.errorMessage = null;
+      }
+    }, error => {
+      if (error) {
+        this.hasError = true;
+        this.errorMessage = error.error;
+        console.log(error);
+      }
     });
     return event;
   }

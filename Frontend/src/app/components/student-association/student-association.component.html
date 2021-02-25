@@ -17,8 +17,9 @@
 	<mat-divider></mat-divider>
 	<div class="mainSection">
 		<h3>All assigned students</h3>
-		<mat-spinner *ngIf="!students"></mat-spinner>
-		<div class="example-table-container">
+		<mat-spinner *ngIf="!students && !hasError"></mat-spinner>
+		<span *ngIf="hasError">{{errorMessage}}</span>
+		<div *ngIf="students && !hasError" class="example-table-container">
 			<table mat-table [dataSource]="students" matSort class="example-table">
 				<!-- ID Column -->
 				<ng-container matColumnDef="id">

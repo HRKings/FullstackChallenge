@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { NameData } from '../_models/NameData';
-import { AssociationService } from '../_services/association.service';
-import { StudentAssociation } from '../_dto/StudentAssociation';
-import { StudentService } from '../_services/student.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NameData } from '../../_models/NameData';
+import { AssociationService } from '../../_services/association.service';
+import { StudentAssociation } from '../../_dto/StudentAssociation';
 
 @Component({
   selector: 'app-student-association',
@@ -19,9 +16,8 @@ export class StudentAssociationComponent implements OnInit {
   newStudentId = '';
   newStudentCourse = '';
 
-  pageIndex: number;
-  pageEvent: PageEvent;
-  resultsLength: number;
+  hasError: boolean;
+  errorMessage: string;
 
   error: boolean;
 
@@ -31,15 +27,21 @@ export class StudentAssociationComponent implements OnInit {
     this.selectedStudent = student;
   }
 
-  constructor(private associationService: AssociationService, private studentService: StudentService, private _snackBar: MatSnackBar) { }
+  constructor(private associationService: AssociationService) { }
 
   // Populate the table
   getStudents(): void {
     this.associationService.getStudents().subscribe(students => {
       if (students) {
         this.students = students
-      } else {
-        this._snackBar.open('There were no associations to display.');
+        this.hasError = false;
+        this.errorMessage = null;
+      }
+    }, error => {
+      if (error) {
+        this.hasError = true;
+        this.errorMessage = error.error;
+        console.log(error);
       }
     });
   }
@@ -47,7 +49,13 @@ export class StudentAssociationComponent implements OnInit {
   // Associates a student to a course
   create(): void {
     if (this.newStudentId && this.newStudentCourse) {
-      this.associationService.studentToCourse(+this.newStudentId, +this.newStudentCourse).subscribe((response) => this.getStudents());
+      this.associationService.studentToCourse(+this.newStudentId, +this.newStudentCourse).subscribe(() => this.getStudents(), error => {
+        if (error) {
+          this.hasError = true;
+          this.errorMessage = error.error;
+          console.log(error);
+        }
+      });
       this.newStudentId = null;
       this.newStudentCourse = null;
     }

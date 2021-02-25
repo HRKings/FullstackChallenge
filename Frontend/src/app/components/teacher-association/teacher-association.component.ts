@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { NameData } from '../_models/NameData';
-import { AssociationService } from '../_services/association.service';
-import { TeacherAssociation } from '../_dto/TeacherAssociation';
-import { TeacherService } from '../_services/teacher.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NameData } from '../../_models/NameData';
+import { AssociationService } from '../../_services/association.service';
+import { TeacherAssociation } from '../../_dto/TeacherAssociation';
 
 @Component({
   selector: 'app-teacher-association',
@@ -21,7 +19,9 @@ export class TeacherAssociationComponent implements OnInit {
 
   pageIndex: number;
   pageEvent: PageEvent;
-  resultsLength: number;
+
+  hasError: boolean;
+  errorMessage: string;
 
   error: boolean;
 
@@ -31,15 +31,21 @@ export class TeacherAssociationComponent implements OnInit {
     this.selectedTeacher = teacher;
   }
 
-  constructor(private associationService: AssociationService, private teacherService: TeacherService, private _snackBar: MatSnackBar) { }
+  constructor(private associationService: AssociationService) { }
 
   // Populates the table
   getTeachers(): void {
     this.associationService.getTeachers().subscribe(teachers => {
       if (teachers) {
         this.teachers = teachers
-      } else {
-        this._snackBar.open('There were no associations to display.');
+        this.hasError = false;
+        this.errorMessage = null;
+      }
+    }, error => {
+      if (error) {
+        this.hasError = true;
+        this.errorMessage = error.error;
+        console.log(error);
       }
     });
   }
@@ -47,7 +53,7 @@ export class TeacherAssociationComponent implements OnInit {
   // Creates a new association between a teacher and a course
   create(): void {
     if (this.newTeacherId && this.newTeacherCourse) {
-      this.associationService.teacherToCourse(+this.newTeacherId, +this.newTeacherCourse).subscribe((response) => this.getTeachers());
+      this.associationService.teacherToCourse(+this.newTeacherId, +this.newTeacherCourse).subscribe(() => this.getTeachers());
       this.newTeacherId = null;
       this.newTeacherCourse = null;
     }
