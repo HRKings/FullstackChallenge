@@ -13,8 +13,9 @@
 
 <div class="mainSection">
 	<h3>All Students</h3>
-	<mat-spinner *ngIf="!students"></mat-spinner>
-	<div *ngIf="students" class="example-table-container">
+	<mat-spinner *ngIf="!students && !hasError"></mat-spinner>
+	<span *ngIf="hasError">{{errorMessage}}</span>
+	<div *ngIf="students && !hasError" class="example-table-container">
 		<table mat-table [dataSource]="students.value" matSort class="example-table">
 			<!-- ID Column -->
 			<ng-container matColumnDef="id">

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
-import { CourseComponent } from './course/course.component';
-import { HomeComponent } from './home/home.component';
-import { ProtectedComponent } from './protected/protected.component';
-import { StudentAssociationComponent } from './student-association/student-association.component';
-import { StudentComponent } from './student/student.component';
-import { TeacherAssociationComponent } from './teacher-association/teacher-association.component';
-import { TeacherComponent } from './teacher/teacher.component';
+import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
+import { CourseComponent } from './components/course/course.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProtectedComponent } from './components/protected/protected.component';
+import { StudentAssociationComponent } from './components/student-association/student-association.component';
+import { StudentComponent } from './components/student/student.component';
+import { TeacherAssociationComponent } from './components/teacher-association/teacher-association.component';
+import { TeacherComponent } from './components/teacher/teacher.component';
 import { AuthGuardService } from './_services/auth/auth-guard.service';
 
 const routes: Routes = [

@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NameData } from '../_models/NameData';
-import { PagedData } from '../_models/PagedData';
-import { TeacherService } from '../_services/teacher.service';
+import { PageEvent } from '@angular/material/paginator';
+import { NameData } from '../../_models/NameData';
+import { PagedData } from '../../_models/PagedData';
+import { TeacherService } from '../../_services/teacher.service';
 
 @Component({
   selector: 'app-teacher',
@@ -18,6 +17,9 @@ export class TeacherComponent implements OnInit {
   pageIndex: number;
   pageEvent: PageEvent;
 
+  hasError: boolean;
+  errorMessage: string;
+
   newTeacher = '';
   columnsToDisplay = ['id', 'name'];
 
@@ -27,15 +29,22 @@ export class TeacherComponent implements OnInit {
     this.getCourses();
   }
 
-  constructor(private teacherService: TeacherService, private _snackBar: MatSnackBar) { }
+  constructor(private teacherService: TeacherService) { }
 
   getTeachers(event?: PageEvent) {
     this.pageIndex = event ? event.pageIndex : 0;
     this.teacherService.getTeachersPaged(this.pageIndex + 1, 10).subscribe(teachers => {
-      if (teachers)
+      if (teachers) {
         this.teachers = teachers
-      else
-        this._snackBar.open('There were no teachers to display.');
+        this.hasError = false;
+        this.errorMessage = null;
+      }
+    }, error => {
+      if (error) {
+        this.hasError = true;
+        this.errorMessage = error.error;
+        console.log(error);
+      }
     });
     return event;
   }
@@ -45,8 +54,10 @@ export class TeacherComponent implements OnInit {
       this.teacherService.getCourses(this.selectedTeacher.id).subscribe(courses => {
         if (courses)
           this.courses = courses
-        else
-          this._snackBar.open('There were no courses to display.');
+      }, error => {
+        if (error) {
+          console.log(error);
+        }
       });
   }
 
