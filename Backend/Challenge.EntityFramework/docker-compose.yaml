@@ -1,0 +1,42 @@
+version: "3.9"
+
+networks:
+  challenge_network:
+    driver: bridge
+
+volumes:
+  challenge_data:
+    driver: local
+
+services:
+  postgres-service:
+    container_name: postgres
+    image: postgres
+    working_dir: /usr/src/app
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - challenge_data:/var/opt/pgsql
+    networks:
+      - challenge_network
+
+  api:
+    build: .
+    container_name: challenge_api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE=Host=postgres-service;Database=postgres;Username=postgres;Password=password
+      - IDENTITY_SERVER=https://host.docker.internal:5002
+      - FRONTEND_PATH"http://host.docker.internal:4200
+    depends_on:
+      - postgres-service
+    networks:
+      - challenge_network
